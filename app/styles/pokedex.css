@@ -16,11 +16,17 @@
     --font-pixel-body: 'VT323', monospace;
 }
 
-/* Base page background overrides — do NOT force pixel font at root level */
+/* Base page background overrides — Pokedex Red */
 .stApp {
-    background-color: #111116;
-    color: #f1f1f5;
+    background-color: var(--pokedex-red) !important;
+    color: #ffffff;
     font-size: 18px;
+}
+
+/* Ensure the top header background matches the Pokedex red */
+[data-testid="stHeader"] {
+    background-color: var(--pokedex-red) !important;
+    background-image: none !important;
 }
 
 /* Apply pixel font ONLY to specific user-facing text elements (excl. dropdown arrows and layout spans) */
@@ -73,6 +79,24 @@
     font-family: var(--font-pixel) !important;
     color: var(--pokedex-yellow) !important;
     text-shadow: 0 0 5px rgba(254, 203, 5, 0.4);
+}
+
+/* Sidebar background overrides — Dark Crimson Red */
+[data-testid="stSidebar"],
+.stSidebar,
+.stSidebar > div {
+    background-color: #5a020c !important;
+    background-image: none !important;
+    border-right: 3px solid #3d0107 !important;
+}
+
+/* Ensure text inside the dark-red sidebar is readable and high-contrast */
+[data-testid="stSidebar"] p,
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] span,
+[data-testid="stSidebar"] li,
+[data-testid="stSidebar"] .retro-text {
+    color: #ffffff !important;
 }
 
 /* Sidebar selective pixel font — applies only to text labels */
@@ -315,4 +339,54 @@
 .stRadio label, .stSelectbox label, .stMultiSelect label {
     font-family: var(--font-pixel-body) !important;
     font-size: 16px !important;
+}
+
+/* Main chat and stats containers styled as black hardware screen panels */
+[data-testid="stVerticalBlockBorderWrapper"],
+.element-container:has([data-testid="stChatMessageContainer"]),
+.stApp [data-testid="stChatMessageContainer"] {
+    background-color: var(--pokedex-screen-bg) !important;
+    border: 4px solid #5a020c !important;
+    border-radius: 12px 12px 12px 25px !important;
+    padding: 15px !important;
+    box-shadow: inset 0 4px 8px rgba(0,0,0,0.8), 0 4px 12px rgba(0,0,0,0.5) !important;
+}
+
+/* Custom chat message bubble styling inside the screen panel */
+[data-testid="stChatMessage"] {
+    background-color: rgba(255, 255, 255, 0.04) !important;
+    border: 1px solid #333344 !important;
+    border-radius: 8px !important;
+}
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {
+    background-color: rgba(0, 240, 255, 0.02) !important;
+    border: 1px solid rgba(0, 240, 255, 0.15) !important;
+}
+
+/* Chat message text colors */
+[data-testid="stChatMessageContent"] * {
+    color: #f1f1f5 !important;
+}
+
+/* User message text color overrides to match cyan typing input */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) [data-testid="stChatMessageContent"] * {
+    color: var(--pokedex-cyan-glow) !important;
+}
+
+/* Widget dropdown and selectboxes custom dark coloring */
+.stSelectbox div[data-baseweb="select"],
+.stMultiSelect div[data-baseweb="select"],
+.stTextInput input {
+    background-color: #1a1a2e !important;
+    color: white !important;
+    border: 2px solid #5a020c !important;
+    border-radius: 8px !important;
+}
+
+/* Chat input wrapper background coloring to match the screen panel theme */
+[data-testid="stChatInput"] {
+    background-color: #5a020c !important;
+    border-top: 3px solid #3d0107 !important;
+    padding: 10px !important;
+    border-radius: 12px !important;
 }
