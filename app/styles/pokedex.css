@@ -1,0 +1,313 @@
+/* RotoDex Device Layout and Styling */
+
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+:root {
+    --pokedex-red: #dc0a2d;
+    --pokedex-dark-red: #8b0000;
+    --pokedex-light-red: #ff3b30;
+    --pokedex-screen-bg: #0c1015;
+    --pokedex-screen-border: #dedede;
+    --pokedex-cyan-glow: #00f0ff;
+    --pokedex-yellow: #fecb05;
+    --pokedex-green: #3ab54a;
+    --pokedex-blue-lens: #29b6f6;
+    --font-pixel: 'Press Start 2P', monospace;
+    --font-pixel-body: 'VT323', monospace;
+}
+
+/* Base page background overrides — do NOT force pixel font at root level */
+.stApp {
+    background-color: #111116;
+    color: #f1f1f5;
+    font-size: 18px;
+}
+
+/* Apply pixel font ONLY to specific user-facing text elements (excl. dropdown arrows and layout spans) */
+.stApp p, .stApp li, .stApp label,
+.stApp .stMarkdown, .stApp .stText,
+.stApp textarea, .stApp input,
+.stApp [data-testid="stChatMessageContent"],
+.stApp [data-testid="stMarkdownContainer"] {
+    font-family: var(--font-pixel-body) !important;
+    font-size: 18px !important;
+    line-height: 1.5 !important;
+}
+
+/* Apply pixel font to action buttons in the top header (Deploy/Stop) */
+[data-testid="stHeader"] button,
+[data-testid="stHeader"] button span,
+.stDeployButton button,
+.stDeployButton span {
+    font-family: var(--font-pixel-body) !important;
+    font-size: 16px !important;
+}
+
+/* Explicitly exempt the sidebar expand/collapse controls and their children from any font overrides to preserve double-chevron icons */
+[data-testid="collapsedControl"],
+[data-testid="collapsedControl"] *,
+[data-testid="stSidebarCollapseButton"],
+[data-testid="stSidebarCollapseButton"] * {
+    font-family: "Material Icons", "Material Symbols Outlined", "Source Sans Pro", sans-serif !important;
+}
+
+
+
+/* Chat input pixel styling */
+.stApp [data-testid="stChatInput"] textarea {
+    font-family: var(--font-pixel-body) !important;
+    font-size: 16px !important;
+    background-color: #1a1a2e !important;
+    color: var(--pokedex-cyan-glow) !important;
+    border: 2px solid #333355 !important;
+}
+
+/* Headers use the tight pixel font */
+.stApp h1, .stApp h2, .stApp h3, .stApp h4,
+.stApp [data-testid="stHeadingWithActionElements"] {
+    font-family: var(--font-pixel) !important;
+    color: var(--pokedex-yellow) !important;
+    text-shadow: 0 0 5px rgba(254, 203, 5, 0.4);
+}
+
+/* Sidebar selective pixel font — applies only to text labels */
+.stSidebar p, 
+.stSidebar label, 
+.stSidebar .stMarkdown,
+.stSidebar [data-testid="stMarkdownContainer"] {
+    font-family: var(--font-pixel-body) !important;
+    font-size: 16px !important;
+}
+
+/* Device Outer Shell */
+.pokedex-container {
+    background: linear-gradient(135deg, var(--pokedex-red) 0%, var(--pokedex-dark-red) 100%);
+    border: 12px solid #5a020c;
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6), inset 0 2px 10px rgba(255,255,255,0.4);
+    margin-bottom: 25px;
+    position: relative;
+}
+
+/* Top Lights Panel */
+.top-lights-panel {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 3px solid #8b0000;
+}
+
+.big-blue-lens {
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at 30% 30%, #e0f7fa 0%, var(--pokedex-blue-lens) 50%, #0288d1 100%);
+    border: 5px solid #ffffff;
+    border-radius: 50%;
+    box-shadow: 0 0 15px var(--pokedex-cyan-glow);
+    margin-right: 20px;
+    position: relative;
+    animation: lens-glow 4s infinite alternate;
+}
+
+.small-light {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #333333;
+    margin-right: 10px;
+}
+
+.light-red {
+    background: radial-gradient(circle at 35% 35%, #ff8a80 0%, #ff1744 100%);
+    box-shadow: 0 0 6px #ff1744;
+}
+
+.light-yellow {
+    background: radial-gradient(circle at 35% 35%, #ffff8d 0%, #ffea00 100%);
+    box-shadow: 0 0 6px #ffea00;
+}
+
+.light-green {
+    background: radial-gradient(circle at 35% 35%, #b9f6ca 0%, #00e676 100%);
+    box-shadow: 0 0 6px #00e676;
+}
+
+/* The screen frame holding the chat/info */
+.pokedex-screen-frame {
+    background-color: #dedede;
+    border-radius: 12px 12px 12px 35px;
+    padding: 15px 15px 30px 15px;
+    box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);
+    border: 4px solid #5a020c;
+}
+
+.pokedex-screen {
+    background-color: var(--pokedex-screen-bg);
+    border-radius: 6px;
+    border: 3px solid #555555;
+    padding: 15px;
+    min-height: 400px;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Scanlines overlay */
+.scanlines {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        rgba(18, 16, 16, 0) 50%, 
+        rgba(0, 0, 0, 0.25) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 10;
+    pointer-events: none;
+    opacity: 0.35;
+}
+
+/* CRT Flicker / glow */
+.pokedex-screen::before {
+    content: " ";
+    display: block;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    z-index: 11;
+    background-size: 100% 2px, 3px 100%;
+    pointer-events: none;
+}
+
+/* Retro Font Classes */
+.retro-text {
+    font-family: var(--font-pixel);
+    font-size: 10px;
+    line-height: 1.6;
+    color: var(--pokedex-cyan-glow);
+    text-shadow: 0 0 4px rgba(0, 240, 255, 0.5);
+}
+
+.retro-title {
+    font-family: var(--font-pixel);
+    font-size: 14px;
+    color: var(--pokedex-yellow);
+    text-shadow: 0 0 5px rgba(254, 203, 5, 0.5);
+    margin-bottom: 15px;
+}
+
+/* Boot-up animation styling */
+@keyframes boot-flicker {
+    0% { opacity: 0.1; }
+    5% { opacity: 0.8; }
+    10% { opacity: 0.3; }
+    15% { opacity: 0.9; }
+    30% { opacity: 0.6; }
+    40% { opacity: 1; }
+    100% { opacity: 1; }
+}
+
+.boot-anim {
+    animation: boot-flicker 0.6s ease-out;
+}
+
+@keyframes lens-glow {
+    0% { box-shadow: 0 0 10px var(--pokedex-cyan-glow); }
+    100% { box-shadow: 0 0 25px var(--pokedex-cyan-glow), 0 0 5px #fff; }
+}
+
+/* Sprite display card style */
+.pokemon-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--pokedex-cyan-glow);
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+    margin-bottom: 10px;
+}
+
+.pokemon-card img {
+    image-rendering: pixelated;
+    transition: transform 0.2s;
+}
+
+.pokemon-card img:hover {
+    transform: scale(1.15);
+}
+
+/* Source citations footer styles */
+.source-footer {
+    font-family: var(--font-pixel);
+    font-size: 9px;
+    color: #8888aa;
+    margin-top: 8px;
+    padding-top: 4px;
+    border-top: 1px dashed rgba(255,255,255,0.1);
+}
+
+/* Custom styled tabs / expanders for matching design */
+.stExpander {
+    border: 1px solid #333344 !important;
+    background-color: rgba(255,255,255,0.02) !important;
+}
+
+/* Stat bar colors */
+.stat-bar-container {
+    background-color: #222233;
+    border-radius: 4px;
+    height: 10px;
+    width: 100%;
+}
+
+.stat-bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease-out;
+}
+
+.type-pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-family: var(--font-pixel);
+    font-size: 9px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    margin-right: 5px;
+    margin-bottom: 5px;
+    text-align: center;
+    min-width: 65px;
+}
+
+/* Buttons in the screen */
+.stButton>button {
+    background-color: #333344 !important;
+    border: 1px solid var(--pokedex-cyan-glow) !important;
+    color: var(--pokedex-cyan-glow) !important;
+    font-family: var(--font-pixel-body) !important;
+    font-size: 16px !important;
+    transition: all 0.2s !important;
+}
+
+.stButton>button:hover {
+    background-color: var(--pokedex-cyan-glow) !important;
+    color: #000000 !important;
+    box-shadow: 0 0 10px var(--pokedex-cyan-glow) !important;
+}
+
+/* Toast / notification styling */
+.stToast {
+    font-family: var(--font-pixel-body) !important;
+}
+
+/* Radio buttons / selectbox */
+.stRadio label, .stSelectbox label, .stMultiSelect label {
+    font-family: var(--font-pixel-body) !important;
+    font-size: 16px !important;
+}

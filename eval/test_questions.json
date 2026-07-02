@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "question": "What is Charizard's base Speed?",
+    "category": "stats",
+    "ground_truth": "100"
+  },
+  {
+    "id": 2,
+    "question": "What are the typing attributes of Bulbasaur?",
+    "category": "stats",
+    "ground_truth": "Grass/Poison"
+  },
+  {
+    "id": 3,
+    "question": "What is Pikachu's hidden ability?",
+    "category": "abilities",
+    "ground_truth": "Lightning Rod"
+  },
+  {
+    "id": 4,
+    "question": "How does Charmander evolve into Charmeleon?",
+    "category": "evolution",
+    "ground_truth": "Level 16"
+  },
+  {
+    "id": 5,
+    "question": "Is Fire effective against Steel?",
+    "category": "type_matchups",
+    "ground_truth": "Super effective (2.0x)"
+  },
+  {
+    "id": 6,
+    "question": "What power does Thunder Shock have?",
+    "category": "moves",
+    "ground_truth": "40"
+  },
+  {
+    "id": 7,
+    "question": "Tell me about Mewtwo's origins.",
+    "category": "lore",
+    "ground_truth": "cloning, genetic engineering, Fuji"
+  },
+  {
+    "id": 8,
+    "question": "What is a recommended competitive build or move for Garchomp in VGC/Smogon?",
+    "category": "strategy",
+    "ground_truth": "Earthquake, Swords Dance, Rough Skin"
+  },
+  {
+    "id": 9,
+    "question": "What is the best Pokemon in the game?",
+    "category": "ambiguous",
+    "ground_truth": "depends on format, tier, role"
+  },
+  {
+    "id": 10,
+    "question": "What is Alakazam's base Special Attack stat?",
+    "category": "stats",
+    "ground_truth": "135"
+  }
+]
