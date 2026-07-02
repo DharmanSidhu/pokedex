@@ -42,7 +42,7 @@ def get_pokemon_names(store: PokemonVectorStore) -> list[str]:
 def fuzzy_match_pokemon(
     query: str,
     pokemon_names: list[str],
-    threshold: int = 65,
+    threshold: int = 80,
     max_matches: int = 3,
 ) -> list[dict]:
     """
@@ -63,11 +63,20 @@ def fuzzy_match_pokemon(
     # Split on non-alphanumeric, keep hyphenated names (e.g., "mr-mime")
     tokens = re.findall(r'[a-zA-Z][\w-]*', query.lower())
 
+    # Exclude types, categories, and common words to avoid false positive name matches
+    EXCLUDED_TOKENS = {
+        "pokemon", "pokédex", "pokedex", "move", "moves", "ability", "abilities",
+        "stats", "stat", "type", "types", "normal", "fire", "water", "electric",
+        "grass", "ice", "fighting", "poison", "ground", "flying", "psychic",
+        "bug", "rock", "ghost", "dragon", "steel", "dark", "fairy", "partner",
+        "game", "build", "strategy", "supereffective", "effective", "weakness"
+    }
+
     matches = []
     seen = set()
 
     for token in tokens:
-        if len(token) < 3:
+        if len(token) < 3 or token in EXCLUDED_TOKENS:
             continue
 
         # Try exact match first

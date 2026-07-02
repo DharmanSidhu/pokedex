@@ -68,7 +68,7 @@ if not st.session_state.booted:
                 <div class="pokedex-screen" style="height: 350px; display: flex; align-items: center; justify-content: center; flex-direction: column;">
                     <div class="scanlines"></div>
                     <div class="retro-text" style="font-size: 16px; margin-bottom: 20px; text-align: center; color: var(--pokedex-yellow);">
-                        ROTODEX OS v2.0
+                        ROTODEX OS v1.5
                     </div>
                     <div class="retro-text" style="font-size: 12px; margin-bottom: 10px; color: var(--pokedex-cyan-glow);">
                         INITIALIZING LOCAL MEMORY DB...

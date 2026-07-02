@@ -16,7 +16,7 @@ def render_sidebar(store: UserMemoryStore) -> str:
         Selected mode string.
     """
     st.sidebar.markdown(
-        '<div class="retro-title" style="font-size: 14px; text-align: center; color: var(--pokedex-yellow);">⚡ ROTODEX v2.0</div>',
+        '<div class="retro-title" style="font-size: 14px; text-align: center; color: var(--pokedex-yellow);">⚡ ROTODEX v1.5</div>',
         unsafe_allow_html=True
     )
 

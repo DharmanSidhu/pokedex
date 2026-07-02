@@ -288,7 +288,7 @@ class ChatOrchestrator:
 
         # Step 1: RAG retrieval
         retrieval_res = self.retriever.retrieve(query, top_k=5)
-        matched_pokemon = retrieval_res["matched_pokemon"]
+        matched_pokemon = list(retrieval_res["matched_pokemon"])
 
         # If no explicit matches found, try to resolve implicit Pokemon references
         if not matched_pokemon:
@@ -297,6 +297,20 @@ class ChatOrchestrator:
                 logger.info(f"Resolved implicit query to species: {resolved_names}")
                 for name in resolved_names:
                     matched_pokemon.append({"name": name, "score": 100})
+
+        # Carrying forward active Pokemon context from recent chat history if no new Pokemon is matched
+        if not matched_pokemon and chat_history:
+            for msg in reversed(chat_history):
+                if isinstance(msg, dict) and "meta" in msg:
+                    meta = msg["meta"]
+                    if isinstance(meta, dict) and "matched_pokemon" in meta:
+                        prev_matched = meta["matched_pokemon"]
+                        if prev_matched:
+                            active_name = prev_matched[0] if isinstance(prev_matched[0], str) else prev_matched[0].get("name")
+                            if active_name:
+                                logger.info(f"Carrying forward active Pokemon context: '{active_name}'")
+                                matched_pokemon.append({"name": active_name, "score": 90})
+                                break
 
         # Step 2: User memory facts
         user_facts = self.memory_store.get_relevant_facts(query, k=5)
@@ -310,6 +324,42 @@ class ChatOrchestrator:
         context_parts = []
         if calc_context:
             context_parts.append(calc_context)
+
+        # Pull exact core profile chunks (base_info, abilities, evolution) & compute type-effectiveness
+        if matched_pokemon:
+            for match in matched_pokemon[:2]:
+                name = match["name"]
+                
+                # Fetch database chunks matching category base_info, abilities, evolution
+                profile_results = self.retriever.store.query(
+                    query_text=f"{name} base stats abilities evolution",
+                    n_results=12,
+                    where={"pokemon_name": name}
+                )
+                for r in profile_results:
+                    cat = r.get("metadata", {}).get("category", "")
+                    if cat in ["base_info", "abilities", "evolution"]:
+                        context_parts.append(r["text"])
+                
+                # Calculate and inject type effectiveness summary
+                poke_data = self.poke_fetcher.fetch_pokemon(name)
+                if poke_data:
+                    summary = type_matchup_summary(poke_data["types"])
+                    weaknesses_4x = [t.title() for t in summary.get("4x", [])]
+                    weaknesses_2x = [t.title() for t in summary.get("2x", [])]
+                    resistances_05x = [t.title() for t in summary.get("0.5x", [])]
+                    resistances_025x = [t.title() for t in summary.get("0.25x", [])]
+                    immunities_0x = [t.title() for t in summary.get("0x", [])]
+                    
+                    type_context = (
+                        f"Type Effectiveness details for {name.title()} ({'/'.join(t.title() for t in poke_data['types'])}):\n"
+                        f"  - 4x Weak to: {', '.join(weaknesses_4x) or 'None'}\n"
+                        f"  - 2x Weak to: {', '.join(weaknesses_2x) or 'None'}\n"
+                        f"  - Resists (0.5x): {', '.join(resistances_05x) or 'None'}\n"
+                        f"  - Double Resists (0.25x): {', '.join(resistances_025x) or 'None'}\n"
+                        f"  - Immune to (0x): {', '.join(immunities_0x) or 'None'}"
+                    )
+                    context_parts.append(type_context)
 
         # RAG context
         rag_text = self.retriever.retrieve_text(query, top_k=5)

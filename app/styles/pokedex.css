@@ -34,21 +34,26 @@
     line-height: 1.5 !important;
 }
 
-/* Apply pixel font to action buttons in the top header (Deploy/Stop) */
-[data-testid="stHeader"] button,
-[data-testid="stHeader"] button span,
+/* Apply pixel font to action buttons in the top-right header (Deploy/Stop/Menu) */
+[data-testid="stHeader"] [data-testid="stDeployButton"] button,
+[data-testid="stHeader"] [data-testid="stDeployButton"] button span,
+[data-testid="stHeader"] [data-testid="stHeaderActionElements"] button,
+[data-testid="stHeader"] [data-testid="stHeaderActionElements"] button span,
+[data-testid="stDeployButton"] button,
+[data-testid="stDeployButton"] span,
 .stDeployButton button,
 .stDeployButton span {
     font-family: var(--font-pixel-body) !important;
     font-size: 16px !important;
 }
 
-/* Explicitly exempt the sidebar expand/collapse controls and their children from any font overrides to preserve double-chevron icons */
-[data-testid="collapsedControl"],
-[data-testid="collapsedControl"] *,
-[data-testid="stSidebarCollapseButton"],
-[data-testid="stSidebarCollapseButton"] * {
-    font-family: "Material Icons", "Material Symbols Outlined", "Source Sans Pro", sans-serif !important;
+/* Keep native system fonts for UI controls (general icons, custom chatbot avatar, material icons) */
+[data-testid="stIcon"],
+[data-testid="stChatMessageAvatarCustom"],
+[data-testid="stChatMessageAvatarAssistant"],
+[data-testid="stChatMessageAvatarUser"],
+.material-icons {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
 
 
