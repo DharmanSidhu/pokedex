@@ -410,7 +410,7 @@ class ChatOrchestrator:
         # Step 7: Call LLM (streamed)
         response = self.client.chat_completion(
             messages=messages,
-            temperature=0.65,
+            temperature=0.4,
             max_tokens=max_tokens,
             enable_thinking=enable_thinking,
             stream=True

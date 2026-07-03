@@ -419,6 +419,39 @@
     border-radius: 8px !important;
 }
 
+/* Style selected value tags (pills) inside the multiselect input box */
+[data-baseweb="tag"] {
+    background-color: #222233 !important;
+    border: 1px solid #5a020c !important;
+    color: #ffffff !important;
+    border-radius: 4px !important;
+}
+[data-baseweb="tag"] span {
+    color: #ffffff !important;
+}
+[data-baseweb="tag"] [role="button"] {
+    color: var(--pokedex-cyan-glow) !important;
+}
+
+/* Style dropdown options list items (when expanded) */
+div[data-baseweb="menu"] li,
+div[data-baseweb="popover"] li,
+[role="option"] {
+    background-color: #1a1a2e !important;
+    color: #ffffff !important;
+    font-family: var(--font-pixel-body) !important;
+    font-size: 16px !important;
+}
+
+/* Hover and active states for dropdown options */
+div[data-baseweb="menu"] li:hover,
+div[data-baseweb="popover"] li:hover,
+[role="option"]:hover,
+[role="option"][aria-selected="true"] {
+    background-color: #5a020c !important;
+    color: var(--pokedex-cyan-glow) !important;
+}
+
 /* Chat input wrapper background coloring to match the screen panel theme */
 [data-testid="stChatInput"] {
     background-color: #5a020c !important;
