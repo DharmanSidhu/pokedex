@@ -105,7 +105,7 @@ screen_col, stats_col = st.columns([2, 1])
 with screen_col:
     st.markdown(f'<div class="retro-title">{selected_mode.upper()} SCREEN</div>', unsafe_allow_html=True)
 
-    if selected_mode in ("General Q&A", "VGC Team Builder", "Trivia Quiz"):
+    if selected_mode == "Ask RotoDex":
 
         # Display chat history
         chat_container = st.container(height=420)
@@ -125,12 +125,8 @@ with screen_col:
                         render_source_footer(meta.get("sources", set()), meta.get("user_memory_applied", False))
 
         # Chat input
-        prompt_placeholder = "Ask RotoDex about stats, matchups, strategy..."
-        if selected_mode == "VGC Team Builder":
-            prompt_placeholder = "Ask RotoDex to build a team or analyze VGC strategy..."
-        elif selected_mode == "Trivia Quiz":
-            prompt_placeholder = "Ask RotoDex for trivia or quiz questions..."
-
+        prompt_placeholder = "Ask RotoDex about stats, strategy, matchups, or trivia..."
+        
         if user_prompt := st.chat_input(placeholder=prompt_placeholder):
             # Add user message to history
             st.session_state.chat_history.append({"role": "user", "content": user_prompt})
@@ -186,36 +182,39 @@ with screen_col:
     elif selected_mode == "Type Matchup Calculator":
         st.caption("Bypasses LLM completely. Uses mathematical type charts for guaranteed accuracy.")
 
-        calc_types = st.multiselect(
-            "Select Pokemon Defending Type(s):",
-            options=[
-                "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground",
-                "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
-            ],
-            max_selections=2,
-            default=["Fire", "Flying"]
-        )
+        calc_container = st.container()
+        with calc_container:
+            st.markdown('<div class="type-calc-marker"></div>', unsafe_allow_html=True)
+            calc_types = st.multiselect(
+                "Select Pokemon Defending Type(s):",
+                options=[
+                    "Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting", "Poison", "Ground",
+                    "Flying", "Psychic", "Bug", "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"
+                ],
+                max_selections=2,
+                default=["Fire", "Flying"]
+            )
 
-        if calc_types:
-            types_lower = [t.lower() for t in calc_types]
-            summary = type_matchup_summary(types_lower)
+            if calc_types:
+                types_lower = [t.lower() for t in calc_types]
+                summary = type_matchup_summary(types_lower)
 
-            st.markdown("### Defensive Profile:")
-            render_type_badges(calc_types)
+                st.markdown("### Defensive Profile:")
+                render_type_badges(calc_types)
 
-            col1, col2 = st.columns(2)
-            with col1:
-                if summary["4x"]:
-                    st.error(f"4x Weak: {', '.join(summary['4x'])}")
-                if summary["2x"]:
-                    st.warning(f"2x Weak: {', '.join(summary['2x'])}")
-            with col2:
-                if summary["0.5x"]:
-                    st.success(f"Resists (0.5x): {', '.join(summary['0.5x'])}")
-                if summary["0.25x"]:
-                    st.success(f"Double Resists (0.25x): {', '.join(summary['0.25x'])}")
-                if summary["0x"]:
-                    st.info(f"Immune (0x): {', '.join(summary['0x'])}")
+                col1, col2 = st.columns(2)
+                with col1:
+                    if summary["4x"]:
+                        st.error(f"4x Weak: {', '.join(summary['4x'])}")
+                    if summary["2x"]:
+                        st.warning(f"2x Weak: {', '.join(summary['2x'])}")
+                with col2:
+                    if summary["0.5x"]:
+                        st.success(f"Resists (0.5x): {', '.join(summary['0.5x'])}")
+                    if summary["0.25x"]:
+                        st.success(f"Double Resists (0.25x): {', '.join(summary['0.25x'])}")
+                    if summary["0x"]:
+                        st.info(f"Immune (0x): {', '.join(summary['0x'])}")
 
 with stats_col:
     st.markdown('<div class="retro-title">RotoDex Sprite Deck</div>', unsafe_allow_html=True)

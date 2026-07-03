@@ -42,8 +42,8 @@ def classify_query_thinking_mode(query: str) -> Tuple[bool, int]:
 
     # Token cap defaults
     # Factual lookup: 1024 tokens max (non-thinking, fast response)
-    # Strategic reasoning: 4096 tokens max (to avoid runaway loops and allow thinking output space)
-    max_tokens = 4096 if enable_thinking else 1024
+    # Strategic reasoning: 8192 tokens max (to avoid runaway loops and allow thinking output space)
+    max_tokens = 8192 if enable_thinking else 1024
     
     logger.info(f"Query classification: thinking_mode={enable_thinking}, max_tokens={max_tokens}")
     

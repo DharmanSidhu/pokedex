@@ -9,11 +9,13 @@ A locally-run, RAG-powered AI Pokedex that answers natural-language Pokemon ques
 ## Features
 
 - **🤖 Local LLM** — Qwen3.5-9B (4-bit quantized) via MLX, runs entirely on your Mac
-- **📚 RAG Pipeline** — Retrieval-Augmented Generation from PokeAPI, Smogon, and Bulbapedia
+- **📚 RAG Pipeline** — Fully indexes all **1,025 Pokemon species** (Gen 1-9) across PokeAPI, Smogon, and Bulbapedia
+- **⚡ Fast-Path Context Carry-Forward** — Detects pronouns in conversational follow-ups and carries forward active Pokemon context without calling the pre-processing LLM, saving 2 seconds of latency
+- **🎯 Surgical Profile Grounding** — Bypasses semantic search constraints to guarantee that matched Pokemon stats, abilities, and evolution files are always in context
+- **🔢 Deterministic Type Effectiveness** — Calculates exact mathematical type matchups in Python and injects them to prevent LLM counter hallucinations
 - **🧠 Persistent Memory** — Remembers your name, team, playstyle across sessions
-- **🎯 Deterministic Tools** — Type matchups and stat calcs use hardcoded logic, never hallucinated
-- **🎮 Pokedex UI** — Authentic device-styled Streamlit interface with sprites, cries, and retro fonts
-- **📊 Modes** — General Q&A, VGC Team Builder, Trivia Quiz, Type Matchup Calculator
+- **🎮 Pokedex UI** — Authentic device-styled Streamlit interface in **Pokedex Red / Dark Crimson** with sprites, cries, and retro pixel fonts
+- **📊 Modes** — Ask RotoDex, Type Matchup Calculator
 
 ## Prerequisites
 

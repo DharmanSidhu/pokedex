@@ -290,27 +290,43 @@ class ChatOrchestrator:
         retrieval_res = self.retriever.retrieve(query, top_k=5)
         matched_pokemon = list(retrieval_res["matched_pokemon"])
 
-        # If no explicit matches found, try to resolve implicit Pokemon references
+        # If no explicit matches found, resolve implicit Pokemon or carry forward active Pokemon
         if not matched_pokemon:
-            resolved_names = self.resolve_implicit_pokemon_names(query)
-            if resolved_names:
-                logger.info(f"Resolved implicit query to species: {resolved_names}")
-                for name in resolved_names:
-                    matched_pokemon.append({"name": name, "score": 100})
-
-        # Carrying forward active Pokemon context from recent chat history if no new Pokemon is matched
-        if not matched_pokemon and chat_history:
-            for msg in reversed(chat_history):
-                if isinstance(msg, dict) and "meta" in msg:
-                    meta = msg["meta"]
-                    if isinstance(meta, dict) and "matched_pokemon" in meta:
-                        prev_matched = meta["matched_pokemon"]
-                        if prev_matched:
-                            active_name = prev_matched[0] if isinstance(prev_matched[0], str) else prev_matched[0].get("name")
-                            if active_name:
-                                logger.info(f"Carrying forward active Pokemon context: '{active_name}'")
-                                matched_pokemon.append({"name": active_name, "score": 90})
+            # Find active Pokemon in recent chat history
+            active_name = None
+            if chat_history:
+                for msg in reversed(chat_history):
+                    if isinstance(msg, dict) and "meta" in msg:
+                        meta = msg["meta"]
+                        if isinstance(meta, dict) and "matched_pokemon" in meta:
+                            prev_matched = meta["matched_pokemon"]
+                            if prev_matched:
+                                active_name = prev_matched[0] if isinstance(prev_matched[0], str) else prev_matched[0].get("name")
                                 break
+
+            # Determine if this is a follow-up query referencing the active Pokemon
+            is_follow_up = False
+            if active_name:
+                query_words = set(re.findall(r'[a-zA-Z]+', query.lower()))
+                pronoun_triggers = {"it", "its", "this", "they", "them", "he", "she", "him", "her", "his", "hers", "that", "the ability", "the moves", "more", "detail", "details"}
+                if len(query_words) <= 4 or (query_words & pronoun_triggers):
+                    is_follow_up = True
+
+            if is_follow_up and active_name:
+                logger.info(f"Fast-path active Pokemon context carry-forward: '{active_name}'")
+                matched_pokemon.append({"name": active_name, "score": 90})
+            else:
+                # Run name-resolution LLM call to resolve implicit descriptors (e.g. "grass starter")
+                resolved_names = self.resolve_implicit_pokemon_names(query)
+                if resolved_names:
+                    logger.info(f"Resolved implicit query to species: {resolved_names}")
+                    for name in resolved_names:
+                        matched_pokemon.append({"name": name, "score": 100})
+                
+                # If name resolution returned nothing, default carry-forward the active Pokemon
+                if not matched_pokemon and active_name:
+                    logger.info(f"Default carry-forward active Pokemon context: '{active_name}'")
+                    matched_pokemon.append({"name": active_name, "score": 90})
 
         # Step 2: User memory facts
         user_facts = self.memory_store.get_relevant_facts(query, k=5)

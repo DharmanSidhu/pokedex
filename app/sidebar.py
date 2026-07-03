@@ -16,7 +16,8 @@ def render_sidebar(store: UserMemoryStore) -> str:
         Selected mode string.
     """
     st.sidebar.markdown(
-        '<div class="retro-title" style="font-size: 14px; text-align: center; color: var(--pokedex-yellow);">⚡ ROTODEX v1.5</div>',
+        '<div class="retro-title" style="font-size: 14px; text-align: center; color: var(--pokedex-yellow); margin-bottom: 2px;">⚡ ROTODEX v1.5</div>'
+        '<div class="retro-text" style="font-size: 8px; text-align: center; color: #8888aa; margin-bottom: 15px;">(stupid & quirky)</div>',
         unsafe_allow_html=True
     )
 
@@ -24,7 +25,7 @@ def render_sidebar(store: UserMemoryStore) -> str:
     st.sidebar.markdown('<span class="retro-text" style="font-size: 10px;">⚙️ SELECT MODE:</span>', unsafe_allow_html=True)
     mode = st.sidebar.radio(
         label="Mode Selector",
-        options=["General Q&A", "VGC Team Builder", "Trivia Quiz", "Type Matchup Calculator"],
+        options=["Ask RotoDex", "Type Matchup Calculator"],
         label_visibility="collapsed"
     )
 
