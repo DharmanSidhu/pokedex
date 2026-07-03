@@ -217,35 +217,38 @@ with screen_col:
                         st.info(f"Immune (0x): {', '.join(summary['0x'])}")
 
 with stats_col:
-    st.markdown('<div class="retro-title">RotoDex Sprite Deck</div>', unsafe_allow_html=True)
+    stats_container = st.container()
+    with stats_container:
+        st.markdown('<div class="stats-deck-marker"></div>', unsafe_allow_html=True)
+        st.markdown('<div class="retro-title">RotoDex Sprite Deck</div>', unsafe_allow_html=True)
 
-    # Show last matched Pokemon's sprite + stats
-    last_pokemon = None
-    for msg in reversed(st.session_state.chat_history):
-        if msg["role"] == "assistant" and "meta" in msg:
-            matched = msg["meta"].get("matched_pokemon")
-            if matched:
-                last_pokemon = matched[0]
-                break
+        # Show last matched Pokemon's sprite + stats
+        last_pokemon = None
+        for msg in reversed(st.session_state.chat_history):
+            if msg["role"] == "assistant" and "meta" in msg:
+                matched = msg["meta"].get("matched_pokemon")
+                if matched:
+                    last_pokemon = matched[0]
+                    break
 
-    if last_pokemon:
-        poke_data = poke_fetcher.fetch_pokemon(last_pokemon)
-        if poke_data:
-            st.markdown(f"**Species Found:** {poke_data['name'].title()}")
-            render_pokemon_card(poke_data["name"], poke_data["sprites"]["official_artwork"], poke_data["types"])
-            render_cry_player(poke_data["cries"]["latest"])
+        if last_pokemon:
+            poke_data = poke_fetcher.fetch_pokemon(last_pokemon)
+            if poke_data:
+                st.markdown(f"**Species Found:** {poke_data['name'].title()}")
+                render_pokemon_card(poke_data["name"], poke_data["sprites"]["official_artwork"], poke_data["types"])
+                render_cry_player(poke_data["cries"]["latest"])
 
-            st.markdown("**Base Stats Profile:**")
-            for stat_name, val in poke_data["base_stats"].items():
-                render_stat_bar(stat_name.replace("-", " ").title(), val)
-    else:
-        st.markdown("""
-        <div style="background-color: rgba(255,255,255,0.02); border: 2px dashed #444; border-radius: 8px; padding: 25px; text-align: center; color: #888;">
-            <div class="retro-text" style="font-size: 9px; line-height: 1.8;">
-                NO ACTIVE POKEMON IN CONTEXT
+                st.markdown("**Base Stats Profile:**")
+                for stat_name, val in poke_data["base_stats"].items():
+                    render_stat_bar(stat_name.replace("-", " ").title(), val)
+        else:
+            st.markdown("""
+            <div style="background-color: rgba(255,255,255,0.02); border: 2px dashed #444; border-radius: 8px; padding: 25px; text-align: center; color: #888;">
+                <div class="retro-text" style="font-size: 9px; line-height: 1.8;">
+                    NO ACTIVE POKEMON IN CONTEXT
+                </div>
+                <div style="font-size: 14px; margin-top: 10px; font-family: var(--font-pixel-body);">
+                    Mention a Pokemon name to load its sprite and stats here.
+                </div>
             </div>
-            <div style="font-size: 14px; margin-top: 10px; font-family: var(--font-pixel-body);">
-                Mention a Pokemon name to load its sprite and stats here.
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+            """, unsafe_allow_html=True)

@@ -461,7 +461,16 @@ div[data-baseweb="popover"] li:hover,
 }
 
 /* Type Matchup Calculator container background styling (matches dark blue-ish dropdown fill) */
-.stApp [data-testid="stVerticalBlock"]:has(.type-calc-marker) {
+[data-testid="stHorizontalBlock"] [data-testid="stVerticalBlock"] [data-testid="stVerticalBlock"]:has(.type-calc-marker) {
+    background-color: #1a1a2e !important;
+    border: 4px solid #5a020c !important;
+    border-radius: 12px 12px 12px 25px !important;
+    padding: 25px !important;
+    box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.6), 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* RotoDex Sprite Deck container background styling (matches dark blue-ish dropdown fill) */
+[data-testid="stHorizontalBlock"] [data-testid="stVerticalBlock"] [data-testid="stVerticalBlock"]:has(.stats-deck-marker) {
     background-color: #1a1a2e !important;
     border: 4px solid #5a020c !important;
     border-radius: 12px 12px 12px 25px !important;
